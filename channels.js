@@ -14,6 +14,13 @@ const channels = {
         key: '3ecf305d54a7729299b93a3d69c02ea5',
 		type: 'mpd'
     },
+	GMAPINOYTV: {
+        name: 'GMA PINOY TV',
+        url: 'https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-abscbn-gma-x7-dash-abscbnono/7c693236-e0c1-40a3-8bd0-bb25e43f5bfc/index.mpd',
+        keyId: 'c95ed4c44b0b4f7fa1c6ebbbbaab21a1',
+        key: '47635b8e885e19f2ccbdff078c207058',
+		type: 'mpd'
+    },
 	A2Z: {
         name: 'A2Z',
         url: 'https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/cg_a2z.mpd',
