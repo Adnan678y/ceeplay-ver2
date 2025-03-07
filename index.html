@@ -1,176 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-<meta name="monetag" content="e71d93e9693c4e52046c8e6354e94219">
-	    <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('cimtaiphos.com',8576676,document.createElement('script'))</script>
-	<script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',8576675,document.createElement('script'))</script>
-	<meta charset="UTF-8">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script><body>
- <title>CEE TV</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+    <title>CEE TV</title>
+    <script src="https://cdn.tailwindcss.com/"></script>
+    <script src="https://content.jwplatform.com/libraries/IDzF9Zmk.js"></script> <!-- JWPlayer -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 2px;
             background: url('https://raw.githubusercontent.com/cee-tv/Chinatv/main/Chill%20Night%20Stars%201-2.gif') no-repeat center center fixed;
             background-size: cover;
+            color: white;
         }
         .container {
             max-width: 850px;
             margin: auto;
             background: rgba(0, 0, 0, 0.5);
-            padding: 1px;
+            padding: 20px;
             box-shadow: 0px 0px 1rem rgba(255, 255, 255, 0.6);
             border-radius: 8px;
-	}
-	  h1 {
-            color: #666;
             text-align: center;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            animation: glowing 2s infinite;
-            font-size: 30px;
         }
-       h2 {
-            color: #fff;
-            font-size: 80%;
-            text-align: center;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            margin-bottom: 20px;
-	    padding: 3px;
-       }
-	  select {
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            padding: 10px 30px 10px 10px;
-            margin-bottom: 20px;
+        select {
+            padding: 10px;
             width: 100%;
-		color: #fff;
-            font-size: 16px;
-            font-weight: 600;
-            border: 2px solid #007BFF;
-            border-radius: 13px;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23007BFF" d="M7 10l5 5 5-5z"/></svg>') no-repeat;
-            background-position: right 10px center;
-            background-size: 20px;
-            background-color: #000;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-		
-    		.player {
-            background-color: #000000;
-            backdrop-filter: blur(10px);
-            padding: 4px;
-            margin: 1px;
-            border: 2px;
             border-radius: 10px;
-            text-align: center;
-            color: #fff;
-		}
-	video {
+            border: 2px solid #007BFF;
+            background: black;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .player {
+            background-color: black;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        video {
             width: 100%;
             height: auto;
             border-radius: 6px;
-        }		               
-	  @keyframes glowing {
-            0% { color: #333; text-shadow: none; }
-            50% { color: #fff; text-shadow: 0 0 8px #fff; }
-            100% { color: #333; text-shadow: none; }
-        } 
-	  
+        }
     </style>
-
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CEE TV TV</title>
-    <script async src="f0a6f.txt" crossorigin="anonymous"></script>
-    <script src="https://cdn.tailwindcss.com/"></script>
-    <script src="jwpsrv.jsS"></script>
-    <script src="jwplayer.jsS"></script>
-    <script src="channels.js"></script>
-    
-    <link href="all.min.css" rel="stylesheet">
-   
 </head>
-<body class="bg-black text-white min-h-screen flex flex-col">
-   
+<body>
 
+    <div class="container">
+        <h1>Enjoy Your Watching</h1>
+        <h2>We only re-share free IPTV links that are publicly available.</h2>
 
-
-    <main class="flex-grow p-4">
-     <div class="container">
-    <h1>Enjoy Your Watching</h1>
-  <h2>We only re-share free Iptv links (such as public IPTV channels, live stream url, m3u8, ts, flv, rtsp, rtmp, txt ect.) which are already at public accessible websites. We DO NOT host or stream any videos on this website, We urge all copyright owners, to recognize that links contained within this site are located somewhere else on the web. Please direct all copyright infringement issues to the companies that host these files.</h2>
-	     
         <div class="channellist">
             <select id="channelSelect">
                 <option value="">TAP HERE TO SELECT CHANNEL</option>
-                <!-- Channel options will be populated dynamically -->
+                <option value="DISNEYXD">DISNEY XD</option>
+                <option value="PBS">PBS KIDS</option>
+                <option value="ANIMAX">ANIMAX</option>
             </select>
         </div>
-		   <div class="player">
-		   
-		       <video id="player" controls autoplay style="width: 100%; max-width: 700px; height: auto;"></video>
-           
-        
+
+        <div class="player">
+            <video id="player" controls autoplay></video>
+        </div>
+    </div>
 
     <script>
-        jwplayer.key = 'XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo';
-        function loadStream(channelKey) {
-            const channel = channels[channelKey];
-            if (!channel) return;
-            jwplayer("player").setup({
-                file: channel.url,
-                type: channel.type,
-                drm: channel.type === 'mpd' ? {
-                    clearkey: {
-                        keyId: channel.keyId,
-                        key: channel.key
-                    }
-                } : undefined,
-                width: "100%",
-            
-                autostart: true
-            });
-        }
-        function populateChannelSelect() {
-            const select = document.getElementById('channelSelect');
-            Object.keys(channels).forEach(key => {
-                const option = document.createElement('option');
-                option.value = key;
-                option.textContent = channels[key].name;
-                select.appendChild(option);
-            });
-        }
-        window.onload = function() {
-            populateChannelSelect();
-            
-            const channelSelect = document.getElementById('channelSelect');
-            channelSelect.addEventListener('change', function() {
-                loadStream(this.value);
-            });
-
-            const menuToggle = document.getElementById('menuToggle');
-            const closeMenu = document.getElementById('closeMenu');
-            const slideMenu = document.getElementById('slideMenu');
-
-            menuToggle.addEventListener('click', () => {
-                slideMenu.classList.remove('translate-x-full');
-            });
-
-            closeMenu.addEventListener('click', () => {
-                slideMenu.classList.add('translate-x-full');
-            });
+        const channels = {
+            DISNEYXD: {
+                name: 'DISNEY XD',
+                url: 'https://fl5.moveonjoy.com/DISNEY_XD/index.m3u8',
+                type: 'hls'
+            },
+            PBS: {
+                name: 'PBS KIDS',
+                url: 'https://2-fss-2.streamhoster.com/pl_140/amlst:200914-1298290/chunklist_b2000000.m3u8',
+                type: 'hls'
+            },
+            ANIMAX: {
+                name: 'ANIMAX',
+                url: 'https://qp-pldt-live-grp-07-prod.akamaized.net/out/u/cg_animax_sd.mpd',
+                keyId: '92032b0e41a543fb9830751273b8debd',
+                key: '03f8b65e2af785b10d6634735dbe6c11',
+                type: 'mpd'
+            }
         };
+
+        document.getElementById('channelSelect').addEventListener('change', function () {
+            const selectedChannel = channels[this.value];
+            if (!selectedChannel) return;
+
+            const player = document.getElementById('player');
+            player.src = selectedChannel.url;
+            player.type = selectedChannel.type === 'hls' ? 'application/x-mpegURL' : 'application/dash+xml';
+            player.load();
+            player.play();
+        });
     </script>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+
 </body>
-
-
 </html>
