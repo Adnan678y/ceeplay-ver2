@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "all.min.css",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "channels.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "jwplayer.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "jwpsrv.js",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}
