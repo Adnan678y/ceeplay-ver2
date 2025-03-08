@@ -3,102 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CEE TV</title>
-    <script src="https://cdn.tailwindcss.com/"></script>
-    <script src="https://content.jwplatform.com/libraries/IDzF9Zmk.js"></script> <!-- JWPlayer -->
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 2px;
-            background: url('https://raw.githubusercontent.com/cee-tv/Chinatv/main/Chill%20Night%20Stars%201-2.gif') no-repeat center center fixed;
-            background-size: cover;
-            color: white;
-        }
-        .container {
-            max-width: 850px;
-            margin: auto;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 20px;
-            box-shadow: 0px 0px 1rem rgba(255, 255, 255, 0.6);
-            border-radius: 8px;
-            text-align: center;
-        }
-        select {
-            padding: 10px;
-            width: 100%;
-            border-radius: 10px;
-            border: 2px solid #007BFF;
-            background: black;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .player {
-            background-color: black;
-            padding: 10px;
-            border-radius: 10px;
-        }
-        video {
-            width: 100%;
-            height: auto;
-            border-radius: 6px;
-        }
-    </style>
+    <title>Animax DRM Player</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.3.6/shaka-player.compiled.min.js"></script>
 </head>
 <body>
-
-    <div class="container">
-        <h1>Enjoy Your Watching</h1>
-        <h2>We only re-share free IPTV links that are publicly available.</h2>
-
-        <div class="channellist">
-            <select id="channelSelect">
-                <option value="">TAP HERE TO SELECT CHANNEL</option>
-                <option value="DISNEYXD">DISNEY XD</option>
-                <option value="PBS">PBS KIDS</option>
-                <option value="ANIMAX">ANIMAX</option>
-            </select>
-        </div>
-
-        <div class="player">
-            <video id="player" controls autoplay></video>
-        </div>
-    </div>
+    <video id="video" width="640" height="360" controls autoplay></video>
 
     <script>
-        const channels = {
-            DISNEYXD: {
-                name: 'DISNEY XD',
-                url: 'https://fl5.moveonjoy.com/DISNEY_XD/index.m3u8',
-                type: 'hls'
-            },
-            PBS: {
-                name: 'PBS KIDS',
-                url: 'https://2-fss-2.streamhoster.com/pl_140/amlst:200914-1298290/chunklist_b2000000.m3u8',
-                type: 'hls'
-            },
-            ANIMAX: {
-                name: 'ANIMAX',
-                url: 'https://qp-pldt-live-grp-07-prod.akamaized.net/out/u/cg_animax_sd.mpd',
-                keyId: '92032b0e41a543fb9830751273b8debd',
-                key: '03f8b65e2af785b10d6634735dbe6c11',
-                type: 'mpd'
+        document.addEventListener('DOMContentLoaded', async function() {
+            if (!shaka.Player.isBrowserSupported()) {
+                alert("Your browser doesn't support DRM playback.");
+                return;
             }
-        };
 
-        document.getElementById('channelSelect').addEventListener('change', function () {
-            const selectedChannel = channels[this.value];
-            if (!selectedChannel) return;
+            const video = document.getElementById('video');
+            const player = new shaka.Player(video);
 
-            const player = document.getElementById('player');
-            player.src = selectedChannel.url;
-            player.type = selectedChannel.type === 'hls' ? 'application/x-mpegURL' : 'application/dash+xml';
-            player.load();
-            player.play();
+            // DRM Configuration
+            player.configure({
+                drm: {
+                    servers: {
+                        'com.widevine.alpha': 'https://your-drm-license-server.com'
+                    },
+                    advanced: {
+                        'com.widevine.alpha': {
+                            videoRobustness: 'SW_SECURE_DECODE',
+                            audioRobustness: 'SW_SECURE_DECODE'
+                        }
+                    }
+                }
+            });
+
+            try {
+                await player.load('https://hls-streaming-seven.vercel.app/Animax.m3u');
+                console.log("The video has loaded successfully.");
+            } catch (error) {
+                console.error("Error loading the video:", error);
+            }
         });
     </script>
-
 </body>
 </html>
