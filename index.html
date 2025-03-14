@@ -3,44 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animax DRM Player</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.3.6/shaka-player.compiled.min.js"></script>
+    <title>Anime Live TV & Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #1e1e1e;
+            color: white;
+        }
+        h2 { margin-top: 10px; }
+        select, button {
+            font-size: 16px;
+            padding: 10px;
+            margin: 10px;
+        }
+        video {
+            width: 90%;
+            max-width: 800px;
+            height: auto;
+            margin-top: 20px;
+            border: 2px solid white;
+        }
+        #epg {
+            margin-top: 20px;
+            text-align: left;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            background: #333;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .epg-item {
+            margin-bottom: 5px;
+            padding: 5px;
+            border-bottom: 1px solid #555;
+        }
+    </style>
 </head>
 <body>
-    <video id="video" width="640" height="360" controls autoplay></video>
+
+    <h2>📺 Anime Live TV & Guide</h2>
+
+    <select id="channelSelect">
+        <option value="http://vthanh.utako.moe/Animax/index.m3u8" data-epg="Animax">Animax</option>
+        <option value="http://vthanh.utako.moe/BS11/index.m3u8" data-epg="BS11.jp">BS11</option>
+        <option value="http://vthanh.utako.moe/AT-X/index.m3u8" data-epg="AT-X">AT-X</option>
+        <option value="http://vthanh.utako.moe/Tokyo_MX1/index.m3u8" data-epg="Tokyo MX">TOKYO MX1</option>
+        <option value="http://vthanh.utako.moe/NHK_E/index.m3u8" data-epg="NHK E">NHK E</option>
+    </select>
+
+    <button onclick="playChannel()">▶ Play</button>
+
+    <br>
+    <video id="videoPlayer" controls></video>
+
+    <h3>📅 TV Guide</h3>
+    <div id="epg">Loading guide...</div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', async function() {
-            if (!shaka.Player.isBrowserSupported()) {
-                alert("Your browser doesn't support DRM playback.");
-                return;
+        function playChannel() {
+            var video = document.getElementById('videoPlayer');
+            var channelSelect = document.getElementById('channelSelect');
+            var channelURL = channelSelect.value;
+            var epgID = channelSelect.options[channelSelect.selectedIndex].dataset.epg;
+
+            if (Hls.isSupported()) {
+                var hls = new Hls();
+                hls.loadSource(channelURL);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    video.play();
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = channelURL;
+                video.play();
+            } else {
+                alert("Your browser does not support HLS streaming!");
             }
 
-            const video = document.getElementById('video');
-            const player = new shaka.Player(video);
+            loadEPG(epgID);
+        }
 
-            // DRM Configuration
-            player.configure({
-                drm: {
-                    servers: {
-                        'com.widevine.alpha': 'https://your-drm-license-server.com'
-                    },
-                    advanced: {
-                        'com.widevine.alpha': {
-                            videoRobustness: 'SW_SECURE_DECODE',
-                            audioRobustness: 'SW_SECURE_DECODE'
+        function parseDate(xmltvTime) {
+            return new Date(
+                xmltvTime.substring(0, 4), // Year
+                xmltvTime.substring(4, 6) - 1, // Month (0-based)
+                xmltvTime.substring(6, 8), // Day
+                xmltvTime.substring(8, 10), // Hour
+                xmltvTime.substring(10, 12) // Minute
+            );
+        }
+
+        function loadEPG(channelID) {
+            const epgDiv = document.getElementById("epg");
+            epgDiv.innerHTML = "Fetching guide...";
+            
+            fetch("https://animenosekai.github.io/japanterebi-xmltv/guide.xml")
+                .then(response => response.text())
+                .then(str => (new window.DOMParser()).parseFromString(str, "text/xml"))
+                .then(data => {
+                    let programs = data.getElementsByTagName("programme");
+                    let now = new Date();
+                    let output = "";
+
+                    for (let i = 0; i < programs.length; i++) {
+                        let channel = programs[i].getAttribute("channel");
+                        let startTime = parseDate(programs[i].getAttribute("start"));
+                        let stopTime = parseDate(programs[i].getAttribute("stop"));
+                        let title = programs[i].getElementsByTagName("title")[0].textContent;
+
+                        if (channel.toLowerCase() === channelID.toLowerCase() && startTime <= now && stopTime >= now) {
+                            output += `<div class="epg-item">⏰ ${startTime.toLocaleTimeString()} - ${title}</div>`;
                         }
                     }
-                }
-            });
 
-            try {
-                await player.load('https://hls-streaming-seven.vercel.app/Animax.m3u');
-                console.log("The video has loaded successfully.");
-            } catch (error) {
-                console.error("Error loading the video:", error);
-            }
-        });
+                    epgDiv.innerHTML = output || "No guide available!";
+                })
+                .catch(err => {
+                    console.error("Failed to fetch EPG:", err);
+                    epgDiv.innerHTML = "Failed to load guide.";
+                });
+        }
     </script>
+
 </body>
 </html>
