@@ -19,37 +19,38 @@
     <video id="video" controls></video>
 
     <script>
-        function playChannel() {
+        async function playChannel() {
             var video = document.getElementById("video");
-            var streamURL = "http://vthanh.utako.moe/Animax/index.m3u8"; // Original URL
+            var originalURL = "https://vthanh.utako.moe/Animax/index.m3u8";
+            var proxyURL = "https://test.cors.workers.dev/?" + encodeURIComponent(originalURL);
 
-            // Bypass SSL & CORS using proxy (you can change the proxy)
-            var proxy = "https://corsproxy.io/?";
-            var fixedURL = proxy + encodeURIComponent(streamURL);
-
-            if (Hls.isSupported()) {
-                var hls = new Hls({
-                    xhrSetup: function (xhr, url) {
-                        xhr.withCredentials = true; // Allow cross-origin
+            try {
+                // First, check if the proxy can fetch the stream
+                let response = await fetch(proxyURL, {
+                    method: "GET",
+                    headers: {
+                        "x-cors-headers": JSON.stringify({
+                            "cookies": "x=123"
+                        })
                     }
                 });
 
-                hls.loadSource(fixedURL);  // Try proxy
-                hls.attachMedia(video);
-                hls.on(Hls.Events.ERROR, function (event, data) {
-                    if (data.details === Hls.ErrorDetails.MANIFEST_LOAD_ERROR) {
-                        console.log("❌ Proxy Failed! Trying Direct HTTP...");
-                        hls.destroy();
-                        hls.loadSource("http://vthanh.utako.moe/Animax/index.m3u8"); // HTTP fallback
-                        hls.attachMedia(video);
-                    }
-                });
+                if (!response.ok) throw new Error("Proxy failed");
 
-            } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
-                video.src = fixedURL;
+                if (Hls.isSupported()) {
+                    var hls = new Hls();
+                    hls.loadSource(proxyURL);
+                    hls.attachMedia(video);
+                } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+                    video.src = proxyURL;
+                    video.play();
+                } else {
+                    alert("Your browser does not support HLS!");
+                }
+            } catch (error) {
+                console.error("Proxy failed, trying HTTP fallback...");
+                video.src = "http://vthanh.utako.moe/Animax/index.m3u8"; // Direct HTTP fallback
                 video.play();
-            } else {
-                alert("Your browser does not support HLS!");
             }
         }
     </script>
